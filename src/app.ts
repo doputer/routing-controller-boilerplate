@@ -1,4 +1,3 @@
-import express from 'express';
 import 'reflect-metadata';
 import morgan from 'morgan';
 import { logger, stream } from './log/winston';
@@ -7,9 +6,12 @@ import { routingConfigs } from './utils/routingConfig';
 import {
   createExpressServer,
   useContainer as routingUseContainer,
+  getMetadataArgsStorage,
 } from 'routing-controllers';
+import { routingControllersToSpec } from 'routing-controllers-openapi';
 import { createConnection, useContainer } from 'typeorm';
 import { Container } from 'typedi';
+import swaggerUi from 'swagger-ui-express';
 
 useContainer(Container);
 routingUseContainer(Container);
@@ -23,6 +25,17 @@ app.use(
   ),
 );
 
+const storage = getMetadataArgsStorage();
+const spec = routingControllersToSpec(storage, routingConfigs, {
+  info: {
+    description: 'Toy Project API DOCS',
+    title: 'Toy Project',
+    version: '0.0.1',
+  },
+});
+
+app.use('/api', swaggerUi.serve, swaggerUi.setup(spec));
+
 createConnection(ormconfigs)
   .then(() => {
     logger.debug('mysql connection success');
@@ -31,7 +44,6 @@ createConnection(ormconfigs)
       logger.debug(`app listening on port ${configs.port}`),
     );
   })
-  .catch(err => {
+  .catch(() => {
     logger.error('mysql connection fail');
-    console.log(err);
   });
