@@ -18,8 +18,8 @@ export class TestController {
     security: [{ bearerAuth: [] }],
   })
   public async test() {
-    // const test = await this.testService.testGet();
-    // logger.debug(test);
+    const test = await this.testService.testGet();
+    logger.debug(test);
 
     return 'test';
   }

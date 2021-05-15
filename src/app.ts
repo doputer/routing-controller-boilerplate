@@ -4,15 +4,17 @@ import morgan from 'morgan';
 import { logger, stream } from './log/winston';
 import { configs, ormconfigs } from './utils/config';
 import { routingConfigs } from './utils/routingConfig';
-import { useContainer } from 'typeorm';
 import {
+  createExpressServer,
   useContainer as routingUseContainer,
-  useExpressServer,
 } from 'routing-controllers';
-import { createConnection } from 'typeorm';
+import { createConnection, useContainer } from 'typeorm';
 import { Container } from 'typedi';
 
-const app = express();
+useContainer(Container);
+routingUseContainer(Container);
+
+const app = createExpressServer(routingConfigs);
 
 app.use(
   morgan(
@@ -24,10 +26,6 @@ app.use(
 createConnection(ormconfigs)
   .then(() => {
     logger.debug('mysql connection success');
-
-    useContainer(Container);
-    routingUseContainer(Container);
-    useExpressServer(app, routingConfigs);
 
     app.listen(configs.port, () =>
       logger.debug(`app listening on port ${configs.port}`),

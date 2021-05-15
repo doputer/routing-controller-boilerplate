@@ -16,5 +16,5 @@ export const ormconfigs: ConnectionOptions = {
   database: process.env.DATABASE || 'toy',
   synchronize: true,
   logging: true,
-  entities: [`${__dirname}/**/entities/**/*.{ts,js}`],
+  entities: [`${__dirname}/../entities/*.{ts,js}`],
 };
