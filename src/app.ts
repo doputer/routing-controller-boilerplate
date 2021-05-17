@@ -4,19 +4,39 @@ import { logger, stream } from './log/winston';
 import { configs, ormconfigs } from './utils/config';
 import { routingConfigs } from './utils/routingConfig';
 import {
-  createExpressServer,
   useContainer as routingUseContainer,
   getMetadataArgsStorage,
+  useExpressServer,
 } from 'routing-controllers';
 import { routingControllersToSpec } from 'routing-controllers-openapi';
 import { createConnection, useContainer } from 'typeorm';
 import { Container } from 'typedi';
 import swaggerUi from 'swagger-ui-express';
+import express from 'express';
+
+import { TestController } from './controllers/TestController';
 
 useContainer(Container);
 routingUseContainer(Container);
 
-const app = createExpressServer(routingConfigs);
+const app = express();
+
+const storage = getMetadataArgsStorage();
+const spec = routingControllersToSpec(
+  storage,
+  {
+    controllers: [TestController],
+  },
+  {
+    info: {
+      description: 'Toy Project API DOCS',
+      title: 'Toy Project',
+      version: '0.0.1',
+    },
+  },
+);
+
+app.use('/api', swaggerUi.serve, swaggerUi.setup(spec));
 
 app.use(
   morgan(
@@ -25,16 +45,7 @@ app.use(
   ),
 );
 
-const storage = getMetadataArgsStorage();
-const spec = routingControllersToSpec(storage, routingConfigs, {
-  info: {
-    description: 'Toy Project API DOCS',
-    title: 'Toy Project',
-    version: '0.0.1',
-  },
-});
-
-app.use('/api', swaggerUi.serve, swaggerUi.setup(spec));
+useExpressServer(app, routingConfigs);
 
 createConnection(ormconfigs)
   .then(() => {
