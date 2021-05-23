@@ -55,6 +55,7 @@ createConnection(ormconfigs)
       logger.debug(`app listening on port ${configs.port}`),
     );
   })
-  .catch(() => {
+  .catch((err) => {
     logger.error('mysql connection fail');
+    console.log(err)
   });

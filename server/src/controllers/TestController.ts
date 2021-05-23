@@ -15,7 +15,6 @@ export class TestController {
   @OpenAPI({
     summary: 'Get 작성',
     statusCode: '200',
-    security: [{ bearerAuth: [] }],
   })
   public async test() {
     const test = await this.testService.testGet();
