@@ -14,7 +14,7 @@ import { Container } from 'typedi';
 import swaggerUi from 'swagger-ui-express';
 import express from 'express';
 
-import { TestController } from './controllers/TestController';
+import { UserController} from './controllers/UserController';
 
 useContainer(Container);
 routingUseContainer(Container);
@@ -25,7 +25,7 @@ const storage = getMetadataArgsStorage();
 const spec = routingControllersToSpec(
   storage,
   {
-    controllers: [TestController],
+    controllers: [UserController],
   },
   {
     info: {
