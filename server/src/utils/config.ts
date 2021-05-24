@@ -1,5 +1,6 @@
-import dotenv from 'dotenv';
-import { ConnectionOptions } from 'typeorm';
+import dotenv from "dotenv";
+import { ConnectionOptions } from "typeorm";
+import nodemailer from "nodemailer";
 
 dotenv.config();
 
@@ -8,13 +9,24 @@ export const configs = {
 };
 
 export const ormconfigs: ConnectionOptions = {
-  type: 'mysql',
-  host: process.env.HOST || 'localhost',
+  type: "mysql",
+  host: process.env.HOST || "localhost",
   port: process.env.DBPORT ? parseInt(process.env.DBPORT) : 3306,
-  username: process.env.USERNAME || 'root',
-  password: process.env.PASSWORD || 'root',
-  database: process.env.DATABASE || 'toy',
+  username: "root",
+  password: process.env.PASSWORD || "root",
+  database: process.env.DATABASE || "toy",
   synchronize: true,
   logging: true,
   entities: [`${__dirname}/../entities/*.{ts,js}`],
 };
+
+export const emailConfigs = nodemailer.createTransport({
+  service: "Gmail",
+  auth: {
+    user: "toysite111@gmail.com",
+    pass: process.env.PASSWORD,
+  },
+  tls: {
+    rejectUnauthorized: false,
+  },
+});
