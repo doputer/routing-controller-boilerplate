@@ -17,10 +17,30 @@ export class UserController {
   })
   public async login(@Body() body: any) {
     const email = body.email;
-    const user = await this.userService.getUserByEmail(email);
+    const password = body.password;
 
-    logger.debug(user);
+    const user = await this.userService.login(email, password);
 
-    return 'test';
+    if (user) {
+      return user;
+    } else {
+      return 'login fail';
+    }
+  }
+
+  @HttpCode(200)
+  @Post('/register')
+  @OpenAPI({
+    summary: '회원가입',
+    statusCode: '200',
+  })
+  public async register(@Body() body: any) {
+    const email = body.email;
+    const nickname = body.nickname;
+    const password = body.password;
+
+    await this.userService.register(email, nickname, password);
+
+    return '1';
   }
 }
