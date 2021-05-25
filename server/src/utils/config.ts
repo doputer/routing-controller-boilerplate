@@ -23,7 +23,7 @@ export const ormconfigs: ConnectionOptions = {
 export const emailConfigs = nodemailer.createTransport({
   service: "gmail",
   auth: {
-    user: "toysite111@gmail.com",
+    user: process.env.EMAILID,
     pass: process.env.EMAILPASSWORD,
   },
   tls: {
