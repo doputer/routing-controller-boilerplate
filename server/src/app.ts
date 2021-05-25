@@ -1,6 +1,7 @@
 import 'reflect-metadata';
 import morgan from 'morgan';
 import { logger, stream } from './log/winston';
+import bodyParser from 'body-parser';
 import { configs, ormconfigs } from './utils/config';
 import { routingConfigs } from './utils/routingConfig';
 import {
@@ -37,6 +38,8 @@ const spec = routingControllersToSpec(
 );
 
 app.use('/api', swaggerUi.serve, swaggerUi.setup(spec));
+
+app.use(express.json());
 
 app.use(
   morgan(
