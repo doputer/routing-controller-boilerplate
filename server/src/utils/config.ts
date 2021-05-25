@@ -21,10 +21,10 @@ export const ormconfigs: ConnectionOptions = {
 };
 
 export const emailConfigs = nodemailer.createTransport({
-  service: "Gmail",
+  service: "gmail",
   auth: {
     user: "toysite111@gmail.com",
-    pass: process.env.PASSWORD,
+    pass: process.env.EMAILPASSWORD,
   },
   tls: {
     rejectUnauthorized: false,

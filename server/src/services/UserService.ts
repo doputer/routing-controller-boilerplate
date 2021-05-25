@@ -13,15 +13,21 @@ export class UserService {
   }
 
   public async sendEmailToUser(email: string) {
+    console.log(email);
     const mailOptions = {
       from: "toysite111@gmail.com",
       to: email,
       subject: "이메일 인증",
       text: "이메일 인증 코드 입니다.",
     };
-    await emailConfigs.sendMail(mailOptions, (error, responses) => {
-      return responses;
+
+    let info = await emailConfigs.sendMail(mailOptions, (error, responses) => {
+      if (error) {
+        console.log(error);
+      }
+      console.log("Finish sending email");
       emailConfigs.close();
+      return responses;
     });
   }
 }

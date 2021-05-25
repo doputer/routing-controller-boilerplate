@@ -18,7 +18,6 @@ export class UserController {
   public async login(@Body() body: any) {
     const email = body.email;
     const user = await this.userService.getUserByEmail(email);
-
     logger.debug(user);
 
     return "test";
@@ -32,10 +31,8 @@ export class UserController {
   })
   public async emailAuth(@Body() body: any) {
     const email = body.email;
+    logger.debug(body.email);
     const user = await this.userService.sendEmailToUser(email);
-
-    logger.debug(user);
-
     return "email";
   }
 }
