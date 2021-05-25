@@ -2,8 +2,6 @@ import { UserRepository } from "../repositories/UserRepository";
 import { Service } from "typedi";
 import { InjectRepository } from "typeorm-typedi-extensions";
 import { emailConfigs } from "../utils/config";
-import ejs from "ejs";
-import { response } from "express";
 
 @Service()
 export class UserService {
