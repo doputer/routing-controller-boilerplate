@@ -1,4 +1,4 @@
-import { Controller, Post, HttpCode, Body } from 'routing-controllers';
+import { Controller, Post, HttpCode, Body, Get } from 'routing-controllers';
 import { OpenAPI } from 'routing-controllers-openapi';
 import { logger } from '../log/winston';
 import { Service } from 'typedi';
@@ -56,5 +56,25 @@ export class UserController {
     await this.userService.register(email, nickname, password);
 
     return '1';
+  }
+
+  @HttpCode(200)
+  @Get('/google')
+  @OpenAPI({
+    summary: '구글 로그인',
+    statusCode: '200',
+  })
+  public async googleAuth(@Body() body: any) {
+    return 'google';
+  }
+
+  @HttpCode(200)
+  @Get('/google/callback')
+  @OpenAPI({
+    summary: '구글 로그인 콜백',
+    statusCode: '200',
+  })
+  public async googleAuthCallback(@Body() body: any) {
+    return 'success';
   }
 }
