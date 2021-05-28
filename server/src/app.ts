@@ -18,6 +18,7 @@ import passport from 'passport';
 import session from 'express-session';
 import { UserController } from './controllers/UserController';
 import google = require('passport-google-oauth20');
+import naver = require('passport-naver');
 useContainer(Container);
 routingUseContainer(Container);
 
@@ -62,6 +63,20 @@ passport.use(
       clientSecret: process.env.GOOGLE_SECRET,
     },
     (_accessToken, _refreshToken, profile, done) => {
+      console.log(profile + 'profile');
+      return done(null, profile);
+    },
+  ),
+);
+
+passport.use(
+  new naver.Strategy(
+    {
+      callbackURL: 'http://localhost:3000/user/naver/callback',
+      clientID: process.env.NAVER_CLIENT_ID,
+      clientSecret: process.env.NAVER_CLIENT_SECRET,
+    },
+    (_accessToken, _refreshToken, profile, done) => {
       return done(null, profile);
     },
   ),
@@ -78,6 +93,8 @@ app.get(
   '/user/google',
   passport.authenticate('google', { scope: ['profile'] }),
 );
+
+app.get('/user/naver', passport.authenticate('naver', { scope: ['profile'] }));
 
 useExpressServer(app, routingConfigs);
 
