@@ -75,6 +75,26 @@ export class UserController {
     statusCode: '200',
   })
   public async googleAuthCallback(@Body() body: any) {
-    return 'success';
+    return 'google-success';
+  }
+
+  @HttpCode(200)
+  @Get('/naver')
+  @OpenAPI({
+    summary: '네이버 로그인',
+    statusCode: '200',
+  })
+  public async naverAuth(@Body() body: any) {
+    return 'naver';
+  }
+
+  @HttpCode(200)
+  @Get('/naver/callback')
+  @OpenAPI({
+    summary: '네이버 로그인 콜백',
+    statusCode: '200',
+  })
+  public async naverAuthCallback(@Body() body: any) {
+    return 'naver-success';
   }
 }
