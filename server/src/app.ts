@@ -14,9 +14,10 @@ import { createConnection, useContainer } from 'typeorm';
 import { Container } from 'typedi';
 import swaggerUi from 'swagger-ui-express';
 import express from 'express';
-
-import { UserController} from './controllers/UserController';
-
+import passport from 'passport';
+import session from 'express-session';
+import { UserController } from './controllers/UserController';
+import google = require('passport-google-oauth20');
 useContainer(Container);
 routingUseContainer(Container);
 
@@ -47,6 +48,36 @@ app.use(
     { stream },
   ),
 );
+app.use(
+  session({ secret: 'SECRET_CODE', resave: true, saveUninitialized: false }),
+);
+app.use(passport.initialize());
+app.use(passport.session());
+
+passport.use(
+  new google.Strategy(
+    {
+      callbackURL: 'http://localhost:3000/user/google/callback',
+      clientID: process.env.GOOGLE_CLIENT_ID,
+      clientSecret: process.env.GOOGLE_SECRET,
+    },
+    (_accessToken, _refreshToken, profile, done) => {
+      return done(null, profile);
+    },
+  ),
+);
+
+passport.serializeUser((user, done) => {
+  done(null, user);
+});
+passport.deserializeUser((user, done) => {
+  done(null, user);
+});
+
+app.get(
+  '/user/google',
+  passport.authenticate('google', { scope: ['profile'] }),
+);
 
 useExpressServer(app, routingConfigs);
 
@@ -58,7 +89,7 @@ createConnection(ormconfigs)
       logger.debug(`app listening on port ${configs.port}`),
     );
   })
-  .catch((err) => {
+  .catch(err => {
     logger.error('mysql connection fail');
-    console.log(err)
+    console.log(err);
   });
