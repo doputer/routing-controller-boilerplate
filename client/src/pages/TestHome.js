@@ -7,6 +7,7 @@ import {
     Link
   } from "react-router-dom";
   import Login from './Login';
+import Resister from './Resister';
 
 
 const TestHome = () => {
@@ -50,6 +51,9 @@ const TestHome = () => {
                 <li>
                     <Link to="/test">home</Link>
                 </li>
+                <li>
+                  <Link to="/register">apply</Link>
+                </li>
                 <button onClick={onLogOut}>로그아웃</button>
             </ul>
             <div style={{display:"flex", justifyContent:"center", alignItems:"center", height:"100vh"}}>
@@ -60,6 +64,9 @@ const TestHome = () => {
                         </Route>
                         <Route exact path="/test">
                             Hello {isLogin? userName:''}
+                        </Route>
+                        <Route exact path="/register">
+                          <Resister/>
                         </Route>
                     </Switch>
                 </Router>

@@ -47,7 +47,10 @@ const Login = ({onLogin}) => {
             history.push('/test')
         })
         .catch(e=>{
-            alert(e);
+            console.log(e);
+            if (e.message==="Request failed with status code 500"){
+                alert('아이디가 존재하지 않습니다.')
+            }
         })
         
     }
