@@ -57,4 +57,19 @@ export class UserController {
 
     return '1';
   }
+
+  @HttpCode(200)
+  @Post('/password/change')
+  @OpenAPI({
+    summary: '비밀번호 변경',
+    statusCode: '200',
+  })
+  public async changePassword(@Body() body: any) {
+    const email = body.email;
+    const password = body.password;
+
+    await this.userService.changePassword(email, password);
+
+    return '1';
+  }
 }

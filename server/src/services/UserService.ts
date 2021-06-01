@@ -77,4 +77,26 @@ export class UserService {
       });
     }
   }
+
+  public async changePassword(email: string, password: string) {
+    const user = await this.userRepository.getUserByEmail(email);
+
+    if (user) {
+      const saltRounds = 10;
+
+      bcrypt.genSalt(saltRounds, (err, salt) => {
+        if (err) throw new EtcError('bcrypt error');
+        bcrypt.hash(password, salt, async (err, hash) => {
+          if (err) throw new EtcError('bcrypt error');
+          password = hash;
+
+          user.password = password;
+
+          await this.userRepository.save(user);
+        });
+      });
+    } else {
+      throw new DbError('존재하지 않는 이메일 입니다.');
+    }
+  }
 }
