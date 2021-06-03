@@ -42,7 +42,7 @@ const Resister = () => {
     //server 전송
     //form에 있는데 주소 명시해줘야 하나?
     axios
-      .post('http://localhost:3000/user/register', null, {
+      .post('http://localhost:3000/user/register', {
         nickname,
         email,
         password,
