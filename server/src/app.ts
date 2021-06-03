@@ -1,7 +1,7 @@
 import 'reflect-metadata';
 import morgan from 'morgan';
 import { logger, stream } from './log/winston';
-import bodyParser from 'body-parser';
+import cors from 'cors';
 import { configs, ormconfigs } from './utils/config';
 import { routingConfigs } from './utils/routingConfig';
 import {
@@ -15,7 +15,7 @@ import { Container } from 'typedi';
 import swaggerUi from 'swagger-ui-express';
 import express from 'express';
 
-import { UserController} from './controllers/UserController';
+import { UserController } from './controllers/UserController';
 
 useContainer(Container);
 routingUseContainer(Container);
@@ -34,8 +34,10 @@ const spec = routingControllersToSpec(
       title: 'Toy Project',
       version: '0.0.1',
     },
-  },
+  }
 );
+
+app.use(cors());
 
 app.use('/api', swaggerUi.serve, swaggerUi.setup(spec));
 
@@ -44,8 +46,8 @@ app.use(express.json());
 app.use(
   morgan(
     'HTTP/:http-version :method :remote-addr :url :remote-user :status :res[content-length] :referrer :user-agent :response-time ms',
-    { stream },
-  ),
+    { stream }
+  )
 );
 
 useExpressServer(app, routingConfigs);
@@ -55,10 +57,10 @@ createConnection(ormconfigs)
     logger.debug('mysql connection success');
 
     app.listen(configs.port, () =>
-      logger.debug(`app listening on port ${configs.port}`),
+      logger.debug(`app listening on port ${configs.port}`)
     );
   })
   .catch((err) => {
     logger.error('mysql connection fail');
-    console.log(err)
+    console.log(err);
   });
