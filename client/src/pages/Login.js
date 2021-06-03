@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import { useHistory } from 'react-router';
+import {Link} from 'react-router-dom'
 
 const Login = ({onLogin}) => {
 
@@ -77,6 +78,7 @@ const Login = ({onLogin}) => {
             <br/>
             <button>구글로 로그인</button>
             <br/>
+            <Link to="/test">네이버로 로그인</Link>
             <button>네이버로 로그인</button>
         </div>
     );
