@@ -28,6 +28,7 @@ const Resister = () => {
     //왜 함수로 안묶어줘도 되는거지?
     const onRegisterSubmit=(event)=>{
         event.preventDefault();
+
         //빈칸 확인
         if(!nickname || !email || !password || !pwCheck){
             alert('비어있는 칸이 있습니다.')
@@ -62,7 +63,7 @@ const Resister = () => {
     }
     const closeAuth=(event)=>{
         event.preventDefault();
-        alert('인증되었습니다.')
+        alert('인증되었습니다.');
         setIsAuth(false);
     }
 
@@ -82,7 +83,7 @@ const Resister = () => {
                     isAuth && (
                         <>
                         <label>인증번호</label><input type="text"/>
-                        <button type="button" onClick={closeAuth}>닫기</button>
+                        <button type="button" onClick={closeAuth}>확인</button>
                         </>
                     )
                 }
@@ -95,7 +96,6 @@ const Resister = () => {
 
                 <button type="submit" style={{marginTop:"20px"}} >회원 가입하기</button>
             </form>
-
         </div>
     );
 };
