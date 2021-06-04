@@ -28,16 +28,12 @@ const Resister = () => {
   const onRegisterSubmit = (event) => {
     event.preventDefault();
 
-        let body={
+        //server 전송
+        //form에 있는데 주소 명시해줘야 하나?
+        axios.post('http://localhost:3000/user/register',{
             nickname:nickname,
             email:email,
             password:password
-        }
-
-        //server 전송
-        //form에 있는데 주소 명시해줘야 하나?
-        axios.post('/user/register',{
-            params:body
         }).then(res=>{
             console.log(res.data);
             history.push('/login');

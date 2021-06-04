@@ -13,30 +13,27 @@ import Resister from './Resister';
 const TestHome = () => {
     const [isLogin, setIsLogin]=useState(false);
     const [userName, setUserName]=useState('');
-  
+
     //로그인 성공하면 이름 받아오기
     const onLogin=(userName)=>{
       setUserName(userName)
     }
+
     
     //리로드를 해줘야 하는가??
-    const onLogOut=(event)=>{
+    const onLogout=(event)=>{
       event.preventDefault();
       sessionStorage.removeItem('user_name');
-      document.location.href='/'
-      console.log('isLogin?',isLogin)
+      document.location.href='/test'
     }
   
     //로그인 상태 확인
     useEffect(()=>{
-      console.log(userName);
       if(sessionStorage.getItem('user_name')===null){
         setUserName('');
         setIsLogin(false);
-        console.log('isLogin?',isLogin);
       } else{
         setIsLogin(true);
-        console.log('isLogin?',isLogin);
       }
     })
     //deps에 isLogin 써줘야되지 않나..
@@ -54,16 +51,18 @@ const TestHome = () => {
                 <li>
                   <Link to="/register">apply</Link>
                 </li>
-                <button onClick={onLogOut}>로그아웃</button>
+                <button onClick={onLogout}>로그아웃</button>
             </ul>
             <div style={{display:"flex", justifyContent:"center", alignItems:"center", height:"100vh"}}>
                 <Router>
                     <Switch>
-                        <Route exact path="/login">
-                            <Login onLogin={onLogin}/>
-                        </Route>
+                        <Route 
+                          exact 
+                          path="/login" 
+                          render={()=><Login/>}
+                        />
                         <Route exact path="/test">
-                            Hello {isLogin? userName:''}
+                            Hello {isLogin? sessionStorage.getItem('user_name'):''}
                         </Route>
                         <Route exact path="/register">
                           <Resister/>

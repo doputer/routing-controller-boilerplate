@@ -3,9 +3,12 @@ import axios from 'axios';
 import { useHistory } from 'react-router';
 import {Link} from 'react-router-dom'
 
-const Login = ({ onLogin }) => {
+const Login = () => {
+    
+
   //url 이동
   const history = useHistory();
+
 
   //login창 email, password 값 업데이트
   const [login, setLogin] = useState({
@@ -25,25 +28,22 @@ const Login = ({ onLogin }) => {
   const onSubmit = (event) => {
     event.preventDefault(); //page reload 방지
 
-    if (!email || !password) {
+    if (!email || !password) { 
       alert('이메일 또는 비밀번호를 입력해주세요');
       return;
     }
 
     //데이터 보내기
     axios
-      .post('/user/login',{
-        params:{
+      .post('http://localhost:3000/user/login',{
+        
             email:email,
             password:password
-        }
+        
       })
-      //.then(res=>res.json())
       .then((res) => {
-        //sessionStorage.setItem('user_email',email)
-        //sessionStorage.setItem('user_name',res.data);
-        //onLogin(sessionStorage.getItem('user_name'));
-        console.log(res.data);
+        sessionStorage.setItem('user_name',res.data.nickname);
+        //onLogin(nickname);
         history.push('/test');
       })
       .catch((e) => {
