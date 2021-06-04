@@ -44,10 +44,71 @@ const Resister = () => {
         }).catch((e)=>console.log(e))
     }
 
-    //timer
-    const [minutes,setMinutes]=useState();
-    const [seconds, setSeconds]=useState();
+    //인증번호 입력
+    const [authNumInput,setAuthNumInput]=useState('');
+    const changeAuthNum=(event)=>{
+        setAuthNumInput(event.target.value);
+    }
+    
+    //인증번호 입력창
+    const [isExpired, setIsExpired]=useState(false);
+    const [isRunning,setIsRunning]=useState(false);
+    const [authNum,setAuthNum]=useState('')
+    
+    const sendAuth=(event)=>{
+        event.preventDefault();
+        setIsAuth(true);
+        setIsExpired(false);
+        setIsRunning(true);
+        setSeconds(10);
+        // axios.post('/user/emailAuth',{
+        //     params:{
+        //         sendEmail:true
+        //     }
+        // })
+        // .then(res=>{
+        //     setAuthNum(res)
+        // })
+    }
+    
     useEffect(()=>{
+        if (!isRunning) return;
+        const timer=setTimeout(()=>{
+            setIsExpired(true);
+            setIsRunning(false);
+            return (alert('인증시간 만료'));
+        },10300) //5분: 300000ms, 0이 뜨기 전 만료 버그때문에 0.3초 늘림
+
+        return ()=>clearInterval(timer);
+    },[isRunning])
+
+    const confirmAuth=(event)=>{
+        event.preventDefault();
+        axios.post('/user/emailAuth',{
+            params:{
+                authNum:authNumInput
+            }
+        })
+        .then(res=>{
+            alert('인증되었습니다.');
+            setIsAuth(false);
+        })
+        .catch((e)=>{
+            console.log(e);
+            alert('인증코드 불일치');
+        })
+        .finally(()=>{
+            setAuthNum('');
+            setIsExpired(false);
+            setIsRunning(false);
+        })
+    }
+
+    //timer
+    const [minutes,setMinutes]=useState(0);
+    const [seconds, setSeconds]=useState(10);
+    useEffect(()=>{
+        //if (!isRunning) return
         const countdown = setInterval(() => {
             if (parseInt(seconds) > 0) {
               setSeconds(parseInt(seconds) - 1);
@@ -63,52 +124,6 @@ const Resister = () => {
           }, 1000);
           return () => clearInterval(countdown);
     },[minutes,seconds])
-
-    //인증번호 입력
-    const [authNum,setAuthNum]=useState('');
-    const changeAuthNum=(event)=>{
-        setAuthNum(event.target.value);
-    }
-    
-    //인증번호 입력창
-    const [isExpired, setIsExpired]=useState(false);
-    const showAuth=(event)=>{
-        event.preventDefault();
-        setIsAuth(true);
-        setIsExpired(false);
-        let timer=setTimeout(()=>{
-            setIsExpired(true);
-            return (alert('인증시간 만료'));
-        },5000) //5분: 300000ms
-    }
-    const confirmAuth=(event)=>{
-        event.preventDefault();
-        axios.post('/user/emailAuth',{
-            params:{
-                authNum:authNum
-            }
-        })
-        .then(res=>{
-            alert('인증되었습니다.');
-            setIsAuth(false);
-            //clearInterval(timer);
-        })
-        .catch((e)=>{
-            console.log(e);
-            alert('인증코드 불일치');
-        })
-        .finally(()=>{
-            setAuthNum('');
-            setIsExpired(false);
-        })
-
-        // alert('인증되었습니다.');
-        // setIsAuth(false);
-        // setAuthNum('');
-        
-    }
-
-    
 
 
   return (
@@ -139,7 +154,7 @@ const Resister = () => {
                 />
                 <button 
                     type="button" 
-                    onClick={showAuth}
+                    onClick={sendAuth}
                 >
                     {isExpired? '재인증':'인증하기'}
                 </button>
@@ -152,15 +167,18 @@ const Resister = () => {
                             </span>
                             <input 
                                 type="text" 
-                                value={authNum} 
+                                value={authNumInput} 
                                 onChange={changeAuthNum} 
                                 disabled={isExpired? true:false}/>
-                            <button 
-                                type="submit" 
-                                onClick={confirmAuth}
-                            >
-                                확인
-                            </button>
+                            { 
+                                !isExpired &&
+                                <button 
+                                    type="submit" 
+                                    onClick={confirmAuth}
+                                >
+                                    확인
+                                </button>
+                            }
                         </form>
                     )
                 }
