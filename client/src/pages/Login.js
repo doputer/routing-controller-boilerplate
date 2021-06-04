@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import { useHistory } from 'react-router';
+import {Link} from 'react-router-dom'
 
 const Login = ({ onLogin }) => {
   //url 이동
@@ -31,9 +32,11 @@ const Login = ({ onLogin }) => {
 
     //데이터 보내기
     axios
-      .post('http://localhost:3000/user/login', {
-        email,
-        password,
+      .post('/user/login',{
+        params:{
+            email:email,
+            password:password
+        }
       })
       //.then(res=>res.json())
       .then((res) => {
@@ -81,14 +84,15 @@ const Login = ({ onLogin }) => {
           name="password"
           onChange={changeLoginInput}
         />
+        <button type="submit">로그인</button>
+        </form>
 
-        <br />
-        <button type="submit">login</button>
-      </form>
-      <br />
-      <button>구글로 로그인</button>
-      <br />
-      <button>네이버로 로그인</button>
+        <br/>
+        <button>구글로 로그인</button>
+        <br/>
+        <Link to="/test">네이버로 로그인</Link>
+        <button>네이버로 로그인</button>
+        <Link to="/register">회원가입</Link>
     </div>
   );
 };
