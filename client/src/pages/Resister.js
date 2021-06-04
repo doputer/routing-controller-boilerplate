@@ -45,10 +45,10 @@ const Resister = () => {
             email:email,
             password:password
         }
-        
+
         //server 전송
         //form에 있는데 주소 명시해줘야 하나?
-        axios.post('/user/register',null,{
+        axios.post('/user/register',{
             params:body
         }).then(res=>{
             console.log(res.data);
@@ -81,14 +81,15 @@ const Resister = () => {
     const changeAuthNum=(event)=>{
         setAuthNum(event.target.value);
     }
-
+    
     //인증번호 입력창
     const [isExpired, setIsExpired]=useState(false);
+    let timer   //?
     const showAuth=(event)=>{
         event.preventDefault();
         setIsAuth(true);
         setIsExpired(false);
-        setTimeout(()=>{
+        timer=setTimeout(()=>{
             setIsExpired(true);
             return (alert('인증시간 만료'));
         },5000) //5분: 300000ms
@@ -111,6 +112,7 @@ const Resister = () => {
         .finally(()=>{
             setAuthNum('');
             setIsExpired(false);
+            clearInterval(timer);
         })
 
         // alert('인증되었습니다.');

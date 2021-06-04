@@ -66,11 +66,15 @@ export class UserService {
         bcrypt.hash(password, salt, async (err, hash) => {
           if (err) throw new EtcError('bcrypt error');
           password = hash;
+          
+         
 
           const user = new User();
           user.email = email;
           user.nickname = nickname;
           user.password = password;
+
+          
 
           await this.userRepository.save(user);
         });

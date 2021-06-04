@@ -80,6 +80,7 @@ const Login = ({onLogin}) => {
             <br/>
             <Link to="/test">네이버로 로그인</Link>
             <button>네이버로 로그인</button>
+            <Link to="/register">회원가입</Link>
         </div>
     );
 };
