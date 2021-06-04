@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import { useHistory } from 'react-router';
-import {Link} from 'react-router-dom'
+import { Link } from 'react-router-dom';
 
 const Login = ({ onLogin }) => {
   //url 이동
@@ -13,7 +13,7 @@ const Login = ({ onLogin }) => {
     password: '',
   });
   const { email, password } = login;
-  const changeLoginInput = (event) => {
+  const changeLoginInput = event => {
     const { value, name } = event.target;
     setLogin({
       ...login,
@@ -22,7 +22,7 @@ const Login = ({ onLogin }) => {
   };
 
   //login 버튼 클릭
-  const onSubmit = (event) => {
+  const onSubmit = event => {
     event.preventDefault(); //page reload 방지
 
     if (!email || !password) {
@@ -32,21 +32,21 @@ const Login = ({ onLogin }) => {
 
     //데이터 보내기
     axios
-      .post('/user/login',{
-        params:{
-            email:email,
-            password:password
-        }
+      .post('http://localhost:3000/user/login', {
+        params: {
+          email: email,
+          password: password,
+        },
       })
       //.then(res=>res.json())
-      .then((res) => {
+      .then(res => {
         //sessionStorage.setItem('user_email',email)
         //sessionStorage.setItem('user_name',res.data);
         //onLogin(sessionStorage.getItem('user_name'));
         console.log(res.data);
         history.push('/test');
       })
-      .catch((e) => {
+      .catch(e => {
         console.log(e);
         if (e.message === 'Request failed with status code 500') {
           alert('아이디가 존재하지 않습니다.');
@@ -85,14 +85,14 @@ const Login = ({ onLogin }) => {
           onChange={changeLoginInput}
         />
         <button type="submit">로그인</button>
-        </form>
+      </form>
 
-        <br/>
-        <button>구글로 로그인</button>
-        <br/>
-        <Link to="/test">네이버로 로그인</Link>
-        <button>네이버로 로그인</button>
-        <Link to="/register">회원가입</Link>
+      <br />
+      <button>구글로 로그인</button>
+      <br />
+      <Link to="/test">네이버로 로그인</Link>
+      <button>네이버로 로그인</button>
+      <Link to="/register">회원가입</Link>
     </div>
   );
 };
