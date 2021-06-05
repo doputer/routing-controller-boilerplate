@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import axios from 'axios';
 import { useHistory } from 'react-router';
 import {Link} from 'react-router-dom'
+import GoogleLogin from 'react-google-login';
 
 const Login = () => {
     
@@ -42,6 +43,7 @@ const Login = () => {
         
       })
       .then((res) => {
+        console.log(res)
         sessionStorage.setItem('user_name',res.data.nickname);
         //onLogin(nickname);
         history.push('/test');
@@ -53,6 +55,9 @@ const Login = () => {
         }
       });
   };
+
+  //네이버 소셜로그인
+  const GOOGLE_CLIENT_ID='231282964469-2qoq6mkvrthdhnvl7ijpi0f4oic12osl.apps.googleusercontent.com'
 
   return (
     <div
@@ -88,9 +93,20 @@ const Login = () => {
         </form>
 
         <br/>
-        <button>구글로 로그인</button>
+        <GoogleLogin
+          clientId={GOOGLE_CLIENT_ID}
+          buttonText="구글로 로그인"
+          onSuccess={ (res)=>{
+            sessionStorage.setItem('user_name',res.Ft.Ue)
+            history.push('/test')
+          } }
+          onFailure={res=>console.log(res)}
+          cookiePolicy={'single_host_origin'}
+        />
         <br/>
-        <Link to="/test">네이버로 로그인</Link>
+        <Link to="https://nid.naver.com/oauth2.0/authorize?response_type=code&client_id=">
+          네이버로 로그인
+        </Link>
         <button>네이버로 로그인</button>
         <Link to="/register">회원가입</Link>
     </div>

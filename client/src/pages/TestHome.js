@@ -20,7 +20,7 @@ const TestHome = () => {
     }
 
     
-    //리로드를 해줘야 하는가??
+    //세션스토리지 clear해야되는지 다른 설정도 필요한지
     const onLogout=(event)=>{
       event.preventDefault();
       sessionStorage.removeItem('user_name');

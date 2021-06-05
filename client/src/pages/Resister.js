@@ -3,7 +3,7 @@ import React, { useEffect, useState } from 'react';
 import { useHistory } from 'react-router';
 
 const Resister = () => {
-  const [isAuth, setIsAuth] = useState(false);
+  
   const [registerInput, setRegisterInput] = useState({
     nickname: '',
     email: '',
@@ -25,8 +25,11 @@ const Resister = () => {
 
   //submit
   //왜 함수로 안묶어줘도 되는거지?
+  const [isAuth, setIsAuth]=useState(false);
   const onRegisterSubmit = (event) => {
-    event.preventDefault();
+        event.preventDefault();
+        
+        if(!isAuth) return alert('인증되지 않은 이메일입니다.');
 
         //server 전송
         //form에 있는데 주소 명시해줘야 하나?
@@ -41,6 +44,7 @@ const Resister = () => {
     }
 
     //인증번호 입력
+    const [isAuthInput, setIsAuthInput] = useState(false);
     const [authNumInput,setAuthNumInput]=useState('');
     const changeAuthNum=(event)=>{
         setAuthNumInput(event.target.value);
@@ -53,18 +57,21 @@ const Resister = () => {
     
     const sendAuth=(event)=>{
         event.preventDefault();
-        setIsAuth(true);
+        setIsAuthInput(true);
         setIsExpired(false);
         setIsRunning(true);
         setSeconds(10);
-        // axios.post('/user/emailAuth',{
-        //     params:{
-        //         sendEmail:true
-        //     }
-        // })
-        // .then(res=>{
-        //     setAuthNum(res)
-        // })
+        axios.post('/user/emailAuth',{
+            email
+        })
+        .then(res=>{
+            console.log(res)
+            //setAuthNum(res);
+        })
+        .catch((e)=>{
+            console.log(e)
+            alert('서버통신오류')
+        });
     }
     
     useEffect(()=>{
@@ -80,24 +87,34 @@ const Resister = () => {
 
     const confirmAuth=(event)=>{
         event.preventDefault();
-        axios.post('/user/emailAuth',{
-            params:{
-                authNum:authNumInput
-            }
-        })
-        .then(res=>{
-            alert('인증되었습니다.');
-            setIsAuth(false);
-        })
-        .catch((e)=>{
-            console.log(e);
-            alert('인증코드 불일치');
-        })
-        .finally(()=>{
-            setAuthNum('');
-            setIsExpired(false);
-            setIsRunning(false);
-        })
+        // axios.post('/user/emailAuth',{
+        //     params:{
+        //         authNum:authNumInput
+        //     }
+        // })
+        // .then(res=>{
+        //     alert('인증되었습니다.');
+        //     setIsAuth(false);
+        // })
+        // .catch((e)=>{
+        //     console.log(e);
+        //     alert('인증코드 불일치');
+        // })
+        // .finally(()=>{
+        //     setAuthNum('');
+        //     setIsExpired(false);
+        //     setIsRunning(false);
+        // })
+        if (authNum===authNumInput){
+            alert('인증되었습니다');
+            setIsAuthInput(false);
+            setIsAuth(true);
+        }else{
+            alert('인증코드 불일치')
+        }
+        setAuthNum('');
+        setIsExpired(false);
+        setIsRunning(false);
     }
 
     //timer
@@ -155,7 +172,7 @@ const Resister = () => {
                     {isExpired? '재인증':'인증하기'}
                 </button>
                 {
-                    isAuth && (
+                    isAuthInput && (
                         <form>
                             <label>인증번호</label> 
                             <span>
