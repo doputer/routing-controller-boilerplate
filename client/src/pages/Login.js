@@ -16,7 +16,7 @@ const Login = () => {
     password: '',
   });
   const { email, password } = login;
-  const changeLoginInput = (event) => {
+  const changeLoginInput = event => {
     const { value, name } = event.target;
     setLogin({
       ...login,
@@ -25,7 +25,7 @@ const Login = () => {
   };
 
   //login 버튼 클릭
-  const onSubmit = (event) => {
+  const onSubmit = event => {
     event.preventDefault(); //page reload 방지
 
     if (!email || !password) { 
@@ -46,7 +46,7 @@ const Login = () => {
         sessionStorage.setItem('user_name',res.data.nickname);
         history.push('/test');
       })
-      .catch((e) => {
+      .catch(e => {
         console.log(e);
         if (e.message === 'Request failed with status code 500') {
           alert('아이디가 존재하지 않습니다.');
@@ -106,7 +106,7 @@ const Login = () => {
           onChange={changeLoginInput}
         />
         <button type="submit">로그인</button>
-        </form>
+      </form>
 
         <br/>
         <GoogleLogin

@@ -13,7 +13,7 @@ const Resister = () => {
   const { nickname, email, password, pwCheck } = registerInput;
 
   //setting input
-  const changeRegisterInput = (event) => {
+  const changeRegisterInput = event => {
     const { value, name } = event.target;
     setRegisterInput({
       ...registerInput,
@@ -207,17 +207,24 @@ const Resister = () => {
           onChange={changeRegisterInput}
         />
 
-                <br/>
+        <br />
 
-                <label>비밀번호 확인</label>
-                <input type="password" name="pwCheck" value={pwCheck} onChange={changeRegisterInput}/>
+        <label>비밀번호 확인</label>
+        <input
+          type="password"
+          name="pwCheck"
+          value={pwCheck}
+          onChange={changeRegisterInput}
+        />
 
-                <br/>
+        <br />
 
-                <button type="submit" style={{marginTop:"20px"}} >회원 가입하기</button>
-            </form>
-        </div>
-    );
+        <button type="submit" style={{ marginTop: '20px' }}>
+          회원 가입하기
+        </button>
+      </form>
+    </div>
+  );
 };
 
 export default Resister;
