@@ -1,19 +1,10 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { useHistory } from 'react-router';
 import {Link} from 'react-router-dom'
 import GoogleLogin from 'react-google-login';
 
 const Login = () => {
-
-  //const NAVER_CLIENT_ID="k6Zo49ffk5DdFP6xZMrb"
-  // const naverLogin=()=>{
-  //   const login=new window.naver.LoginWithNaverId({
-  //     clientId:NAVER_CLIENT_ID,
-
-  //   })
-  // }
-    
 
   //url 이동
   const history = useHistory();
@@ -68,6 +59,21 @@ const Login = () => {
 
   //네이버 소셜 로그인
   const NAVER_CLIENT_ID='k6Zo49ffk5DdFP6xZMrb'
+  const NAVER_CALLBACK_URL='http://localhost:3000/user/naver/callback';
+  
+  
+
+  useEffect(()=>{
+    const naver_login=new window.naver_id_login(NAVER_CLIENT_ID,NAVER_CALLBACK_URL);
+    const state=naver_login.getUniqState();
+    naver_login.setButton("green", 3,30);
+  	naver_login.setDomain("http://localhost:3500");
+  	naver_login.setState(state);
+  	naver_login.setPopup();
+  	naver_login.init_naver_id_login();
+    
+  },[])
+
 
   return (
     <div
@@ -107,16 +113,15 @@ const Login = () => {
           clientId={GOOGLE_CLIENT_ID}
           buttonText="구글로 로그인"
           onSuccess={(res)=>{
-            sessionStorage.setItem('user_name',res.Ft.Ue)
+            sessionStorage.setItem('user_name',res.profileObj.name)
             history.push('/test')
           }}
           onFailure={()=>alert('로그인에러')}
           cookiePolicy={'single_host_origin'}
         />
         <br/>
-        <Link to={`https://nid.naver.com/oauth2.0/authorize?response_type=code&client_id=${NAVER_CLIENT_ID}`}>
-          네이버로 로그인
-        </Link>
+        
+        {/* <div id="naver_id_login"> 시작하기</div> */}
         <button>네이버로 로그인</button>
         <Link to="/register">회원가입</Link>
     </div>

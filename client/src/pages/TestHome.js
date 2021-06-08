@@ -62,7 +62,8 @@ const TestHome = () => {
                           render={()=><Login/>}
                         />
                         <Route exact path="/test">
-                            Hello {isLogin? sessionStorage.getItem('user_name'):''}
+                            Hello {isLogin && sessionStorage.getItem('user_name')}
+                            
                         </Route>
                         <Route exact path="/register">
                           <Resister/>
