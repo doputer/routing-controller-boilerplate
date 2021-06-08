@@ -5,6 +5,14 @@ import {Link} from 'react-router-dom'
 import GoogleLogin from 'react-google-login';
 
 const Login = () => {
+
+  //const NAVER_CLIENT_ID="k6Zo49ffk5DdFP6xZMrb"
+  // const naverLogin=()=>{
+  //   const login=new window.naver.LoginWithNaverId({
+  //     clientId:NAVER_CLIENT_ID,
+
+  //   })
+  // }
     
 
   //url 이동
@@ -45,7 +53,6 @@ const Login = () => {
       .then((res) => {
         console.log(res)
         sessionStorage.setItem('user_name',res.data.nickname);
-        //onLogin(nickname);
         history.push('/test');
       })
       .catch((e) => {
@@ -56,8 +63,11 @@ const Login = () => {
       });
   };
 
-  //네이버 소셜로그인
+  //구글 소셜로그인
   const GOOGLE_CLIENT_ID='231282964469-2qoq6mkvrthdhnvl7ijpi0f4oic12osl.apps.googleusercontent.com'
+
+  //네이버 소셜 로그인
+  const NAVER_CLIENT_ID='k6Zo49ffk5DdFP6xZMrb'
 
   return (
     <div
@@ -96,15 +106,15 @@ const Login = () => {
         <GoogleLogin
           clientId={GOOGLE_CLIENT_ID}
           buttonText="구글로 로그인"
-          onSuccess={ (res)=>{
+          onSuccess={(res)=>{
             sessionStorage.setItem('user_name',res.Ft.Ue)
             history.push('/test')
-          } }
-          onFailure={res=>console.log(res)}
+          }}
+          onFailure={()=>alert('로그인에러')}
           cookiePolicy={'single_host_origin'}
         />
         <br/>
-        <Link to="https://nid.naver.com/oauth2.0/authorize?response_type=code&client_id=">
+        <Link to={`https://nid.naver.com/oauth2.0/authorize?response_type=code&client_id=${NAVER_CLIENT_ID}`}>
           네이버로 로그인
         </Link>
         <button>네이버로 로그인</button>

@@ -60,6 +60,7 @@ const Resister = () => {
         setIsAuthInput(true);
         setIsExpired(false);
         setIsRunning(true);
+        setMinutes(10);
         setSeconds(10);
         axios.post('/user/emailAuth',{
             email
