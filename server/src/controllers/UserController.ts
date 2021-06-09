@@ -1,4 +1,4 @@
-import { Controller, Post, HttpCode, Body } from 'routing-controllers';
+import { Controller, Post, HttpCode, Body, Get } from 'routing-controllers';
 import { OpenAPI } from 'routing-controllers-openapi';
 import { logger } from '../log/winston';
 import { Service } from 'typedi';
@@ -8,6 +8,14 @@ import { UserService } from '../services/UserService';
 @Controller('/user')
 export class UserController {
   constructor(private userService: UserService) {}
+
+  @Get('')
+  @OpenAPI({
+    summary: 'Hello Webfold',
+  })
+  public async hello() {
+    return 'hello webfold!';
+  }
 
   @HttpCode(200)
   @Post('/login')
