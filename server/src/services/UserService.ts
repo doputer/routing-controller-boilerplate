@@ -7,7 +7,6 @@ import { UserRepository } from '../repositories/UserRepository';
 import { User } from '../entities/UserEntity';
 import { DbError } from '../errors/DbError';
 import { EtcError } from '../errors/EtcError';
-import { callbackify } from 'util';
 
 @Service()
 export class UserService {
@@ -66,15 +65,11 @@ export class UserService {
         bcrypt.hash(password, salt, async (err, hash) => {
           if (err) throw new EtcError('bcrypt error');
           password = hash;
-          
-         
 
           const user = new User();
           user.email = email;
           user.nickname = nickname;
           user.password = password;
-
-          
 
           await this.userRepository.save(user);
         });

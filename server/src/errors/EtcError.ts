@@ -11,6 +11,8 @@ export class EtcError extends HttpError {
     this.operationName = operationName;
     this.args = args; // can be used for internal logging
 
+    console.log('asd');
+
     new Error(500, this.operationName);
   }
 }

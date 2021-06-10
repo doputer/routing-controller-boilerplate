@@ -7,8 +7,6 @@ export class Error {
   constructor(status: number, message: string) {
     this.status = status;
     this.message = message;
-
-    logger.error(`${this.status} / ${this.message}`);
   }
 
   toJSON() {

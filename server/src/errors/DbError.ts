@@ -6,11 +6,11 @@ export class DbError extends HttpError {
   public args: any[];
 
   constructor(operationName: string, args: any[] = []) {
-    super(500);
+    super(400);
     Object.setPrototypeOf(this, DbError.prototype);
     this.operationName = operationName;
     this.args = args; // can be used for internal logging
 
-    new Error(500, this.operationName);
+    new Error(400, this.operationName);
   }
 }

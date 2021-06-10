@@ -1,8 +1,15 @@
-import { Controller, Post, HttpCode, Body, Get } from 'routing-controllers';
+import {
+  Controller,
+  Post,
+  Body,
+  Get,
+  Patch,
+  HttpCode,
+} from 'routing-controllers';
 import { OpenAPI } from 'routing-controllers-openapi';
-import { logger } from '../log/winston';
 import { Service } from 'typedi';
 import { UserService } from '../services/UserService';
+import { Email, Login, Register } from '../validator/userValidator';
 
 @Service()
 @Controller('/user')
@@ -21,11 +28,9 @@ export class UserController {
   @Post('/login')
   @OpenAPI({
     summary: '로그인',
-    statusCode: '200',
   })
-  public async login(@Body() body: any) {
-    const email = body.email;
-    const password = body.password;
+  public async login(@Body() body: Login) {
+    let { email, password } = body;
 
     const user = await this.userService.login(email, password);
 
@@ -37,29 +42,25 @@ export class UserController {
   }
 
   @HttpCode(200)
-  @Post('/emailAuth')
+  @Post('/email-auth')
   @OpenAPI({
     summary: '이메일 인증',
-    statusCode: '200',
   })
-  public async emailAuth(@Body() body: any) {
-    const email = body.email;
+  public async emailAuth(@Body() body: Email) {
+    let { email } = body;
+
     const user = await this.userService.sendEmailToUser(email);
-    logger.debug(user);
 
     return 'email';
   }
 
-  @HttpCode(200)
+  @HttpCode(201)
   @Post('/register')
   @OpenAPI({
     summary: '회원가입',
-    statusCode: '200',
   })
-  public async register(@Body() body: any) {
-    const email = body.email;
-    const nickname = body.nickname;
-    const password = body.password;
+  public async register(@Body() body: Register) {
+    let { email, nickname, password } = body;
 
     await this.userService.register(email, nickname, password);
 
@@ -67,14 +68,12 @@ export class UserController {
   }
 
   @HttpCode(200)
-  @Post('/password/change')
+  @Patch('/password')
   @OpenAPI({
     summary: '비밀번호 변경',
-    statusCode: '200',
   })
-  public async changePassword(@Body() body: any) {
-    const email = body.email;
-    const password = body.password;
+  public async changePassword(@Body() body: Login) {
+    let { email, password } = body;
 
     await this.userService.changePassword(email, password);
 

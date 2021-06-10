@@ -14,6 +14,8 @@ import { createConnection, useContainer } from 'typeorm';
 import { Container } from 'typedi';
 import swaggerUi from 'swagger-ui-express';
 import express from 'express';
+import { validationMetadatasToSchemas } from 'class-validator-jsonschema';
+const { defaultMetadataStorage } = require('class-transformer/cjs/storage');
 
 import { UserController } from './controllers/UserController';
 
@@ -22,6 +24,10 @@ routingUseContainer(Container);
 
 const app = express();
 
+const schemas = validationMetadatasToSchemas({
+  classTransformerMetadataStorage: defaultMetadataStorage,
+  refPointerPrefix: '#/components/schemas/',
+});
 const storage = getMetadataArgsStorage();
 const spec = routingControllersToSpec(
   storage,
@@ -29,25 +35,34 @@ const spec = routingControllersToSpec(
     controllers: [UserController],
   },
   {
+    components: {
+      schemas,
+      securitySchemes: {
+        basicAuth: {
+          scheme: 'basic',
+          type: 'http',
+        },
+      },
+    },
     info: {
-      description: 'Toy Project API DOCS',
-      title: 'Toy Project',
+      description: 'Webfold Project API DOCS',
+      title: 'Webfold Project',
       version: '0.0.1',
     },
-  }
+  },
 );
 
 app.use(cors());
 
-app.use('/api', swaggerUi.serve, swaggerUi.setup(spec));
+app.use('/docs', swaggerUi.serve, swaggerUi.setup(spec));
 
 app.use(express.json());
 
 app.use(
   morgan(
     'HTTP/:http-version :method :remote-addr :url :remote-user :status :res[content-length] :referrer :user-agent :response-time ms',
-    { stream }
-  )
+    { stream },
+  ),
 );
 
 useExpressServer(app, routingConfigs);
@@ -57,10 +72,10 @@ createConnection(ormconfigs)
     logger.debug('mysql connection success');
 
     app.listen(configs.port, () =>
-      logger.debug(`app listening on port ${configs.port}`)
+      logger.debug(`app listening on port ${configs.port}`),
     );
   })
-  .catch((err) => {
+  .catch(err => {
     logger.error('mysql connection fail');
     console.log(err);
   });
