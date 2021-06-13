@@ -9,20 +9,12 @@ import {
 import { OpenAPI } from 'routing-controllers-openapi';
 import { Service } from 'typedi';
 import { UserService } from '../services/UserService';
-import { Email, Login, Register } from '../validator/userValidator';
+import { Email, Login, Register } from '../validators/userValidator';
 
 @Service()
 @Controller('/user')
 export class UserController {
   constructor(private userService: UserService) {}
-
-  @Get('')
-  @OpenAPI({
-    summary: 'Hello Webfold',
-  })
-  public async hello() {
-    return 'hello webfold!';
-  }
 
   @HttpCode(200)
   @Post('/login')
