@@ -18,7 +18,7 @@ export class ErrorHander implements ExpressErrorMiddlewareInterface {
         validatorError.constraints,
       )[0].toString();
 
-      errorResponse = new Error(400, errorMessage);
+      errorResponse = new Error(422, errorMessage);
     } else {
       errorResponse = new Error(
         error.httpCode || 500,

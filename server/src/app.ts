@@ -18,6 +18,7 @@ import { validationMetadatasToSchemas } from 'class-validator-jsonschema';
 const { defaultMetadataStorage } = require('class-transformer/cjs/storage');
 
 import { UserController } from './controllers/UserController';
+import { PostController } from './controllers/PostController';
 
 useContainer(Container);
 routingUseContainer(Container);
@@ -32,7 +33,7 @@ const storage = getMetadataArgsStorage();
 const spec = routingControllersToSpec(
   storage,
   {
-    controllers: [UserController],
+    controllers: [UserController, PostController],
   },
   {
     components: {
