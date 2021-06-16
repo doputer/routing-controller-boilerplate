@@ -67,7 +67,7 @@ export class UserController {
     summary: '회원가입',
     responses: {
       '201': {
-        description: '로그인 성공',
+        description: '회원가입 성공',
       },
       '400': {
         description: '이미 가입된 사용자',
@@ -94,7 +94,7 @@ export class UserController {
     summary: '비밀번호 변경',
     responses: {
       '200': {
-        description: '로그인 성공',
+        description: '비밀번호 변경 성공',
       },
       '400': {
         description: '존재하지 않는 이메일',
