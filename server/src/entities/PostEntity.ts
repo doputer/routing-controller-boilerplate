@@ -6,6 +6,7 @@ import {
   ManyToOne,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
+  ManyToMany,
 } from 'typeorm';
 import { User } from './UserEntity';
 
@@ -25,4 +26,7 @@ export class Post extends BaseEntity {
 
   @UpdateDateColumn()
   updatedAt: Date;
+
+  @ManyToMany(type => User, user => user.bookMarkPosts)
+  bookMarkUsers : User[];
 }

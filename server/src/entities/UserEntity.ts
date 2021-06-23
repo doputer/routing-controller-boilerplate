@@ -5,6 +5,7 @@ import {
   Entity,
   OneToMany,
   PrimaryGeneratedColumn,
+  ManyToMany,
 } from 'typeorm';
 import { Post } from './PostEntity';
 
@@ -27,4 +28,7 @@ export class User extends BaseEntity {
 
   @CreateDateColumn()
   registeredAt: Date;
+
+  @ManyToMany(type => Post, post => post.bookMarkUsers)
+  bookMarkPosts : Post[];
 }
