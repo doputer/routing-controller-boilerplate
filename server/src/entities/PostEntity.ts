@@ -20,9 +20,6 @@ export class Post extends BaseEntity {
   @ManyToOne(type => User, user => user.id)
   author: User;
 
-  @Column()
-  content: string;
-
   @CreateDateColumn()
   createdAt: Date;
 

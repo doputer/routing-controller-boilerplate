@@ -10,24 +10,7 @@ export class PostController {
   constructor(private postService: PostService) {}
 
   @HttpCode(200)
-  @Get('/main')
-  @OpenAPI({
-    summary: '랜딩페이지',
-    responses: {
-      '200': {
-        description: '페이지 랜딩 성공',
-      },
-      '422': {
-        description: '발리데이터 에러',
-      },
-    },
-  })
-  public async landAllPosts() {
-    return await this.postService.landAllPosts();
-  }
-
-  @HttpCode(200)
-  @Get('/search')
+  @Get('')
   @OpenAPI({
     summary: '검색',
     responses: {
