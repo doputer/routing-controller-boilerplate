@@ -13,7 +13,7 @@ export const ormconfigs: ConnectionOptions = {
   host: process.env.HOST || "localhost",
   port: process.env.DBPORT ? parseInt(process.env.DBPORT) : 3306,
   username: "root",
-  password: process.env.PASSWORD || "root",
+  password: process.env.PASSWORD || "beast4518",
   database: process.env.DATABASE || "toy",
   synchronize: true,
   logging: true,
