@@ -9,6 +9,11 @@ export class PostService {
   @InjectRepository()
   private readonly postRepository: PostRepository;
 
+  public async landAllPosts(): Promise<Post[]> {
+    // landing page
+    return await this.postRepository.getAll();
+  }
+
   public async searchPosts(query: Search): Promise<Post[]> {
     // 키워드 검색
     return await this.postRepository.getPostsByKeyword(query.keyword);
